@@ -20,6 +20,8 @@ var {
   Navigator,
 } = React;
 
+var SettingsViewer = require('./SettingsViewer');
+
 var SlideViewer = React.createClass({
   getInitialState: function() {
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});

@@ -11,6 +11,8 @@ var {
   Navigator,
 } = React;
 
+var SlideViewer = require('./SlideViewer');
+
 var SettingsViewer = React.createClass({
 	render: function() {
 		return (
@@ -20,14 +22,22 @@ var SettingsViewer = React.createClass({
 		          onPress={this.goToSlides}>
 		            <Text style={styles.buttonText}>home</Text>
 		        </TouchableHighlight> 
-				<Text>
+				<Text style={buttonText}>
 		          test settings text here
 		        </Text>
 			</View>
 		);
 	},
-	goToSlides: function() {
-		this.props.navigator.pop();
+
+	  goToSlides: function() {
+	    if (Platform.OS === 'ios') {
+	      this.props.navigator.push({
+	        title: 'slides',
+	        component: SlideViewer,
+	      });
+	    } else {
+	      this.props.navigator.pop();
+	    }
 	  },
 });
 
