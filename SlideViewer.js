@@ -1,10 +1,11 @@
 var MOCKED_POSTS_DATA = [
-  {source: 'facebook', text: 'The NSA is going to be at the career fair tomorrow, so I want to take this opportunity to remind everybody, that while there are many jobs in CS that are in a "grey area," there are a whole lot more jobs that aren\'t. Jacob Appelbaum, creator of Tor gave a talk where he said, "Write free software for everyone, instead of oppressive software for cops." I don\'t entirely agree with Appelbaum, nor do I suggest everybody go out and open source their software, but I just want to point out that simply choosing not to work in the "gray area" is doing something. I leave which companies you hand your resume to up to you.'},
-  {source: 'hackernews', text: 'Free Lossless Image Format'},
-  {source: 'twitter', text: "Today's our birthday! We're 57 & look forward to many more years of exploration & discovery. http://go.nasa.gov/1KXm7uS"},
-  {source: 'facebook', text: 'Doing just a little bit during the time we have available puts you that much further ahead than if you took no action at all.'},
-  {source: 'twitter', text: 'Just got a new car!'},
-  {source: 'hackernews', text: 'Microsoft Edge gets native ECMAScript 7 async/await support in latest build'},
+  {id: 987967, source: 'facebook', text: 'The NSA is going to be at the career fair tomorrow, so I want to take this opportunity to remind everybody, that while there are many jobs in CS that are in a "grey area," there are a whole lot more jobs that aren\'t. Jacob Appelbaum, creator of Tor gave a talk where he said, "Write free software for everyone, instead of oppressive software for cops." I don\'t entirely agree with Appelbaum, nor do I suggest everybody go out and open source their software, but I just want to point out that simply choosing not to work in the "gray area" is doing something. I leave which companies you hand your resume to up to you.'},
+  {id: 7654756, source: 'hackernews', text: 'Free Lossless Image Format'},
+  {id: 8687, source: 'twitter', text: "Today's our birthday! We're 57 & look forward to many more years of exploration & discovery. http://go.nasa.gov/1KXm7uS"},
+  {id: 786567, source: 'facebook', text: 'Doing just a little bit during the time we have available puts you that much further ahead than if you took no action at all.'},
+  {id: 4253245, source: 'twitter', text: 'Had a great time last night, doing stuff with people! #life'},
+  {id: 47437, source: 'twitter', text: 'just setting up my twttr'},
+  {id: 214924, source: 'hackernews', text: 'Microsoft Edge gets native ECMAScript 7 async/await support in latest build'},
 ];
 
 var React = require('react-native');
@@ -13,7 +14,6 @@ var {
   Platform,
   ScrollView,
   TouchableHighlight,
-  TouchableNativeFeedback,
   Text,
   View,
   StyleSheet,
@@ -40,6 +40,7 @@ var SlideViewer = React.createClass({
           dataSource={this.state.dataSource}
           renderRow={this.renderPost} >
         </ListView>
+        
         </ScrollView>
     );
   },
@@ -80,6 +81,32 @@ var SlideViewer = React.createClass({
     }
   },
 
+  removeItem: function(postid) {
+    console.log(postid);
+    var index = -1;
+    var newData = [];
+    for (var i = 0; i < MOCKED_POSTS_DATA.length; i++) {
+      if (MOCKED_POSTS_DATA[i].id == postid) {
+        console.log(MOCKED_POSTS_DATA[i])
+        index = i;
+      }
+      else {
+        newData.push(MOCKED_POSTS_DATA[i]);
+      }
+    }
+
+    MOCKED_POSTS_DATA = newData;
+    /* if (index != -1) {
+      MOCKED_POSTS_DATA.splice(index, 1);
+    } */
+
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(MOCKED_POSTS_DATA),
+    });
+
+    console.log(this.state.dataSource);
+  },
+
   renderPost: function(post) {
     var postStyle = {
       textAlign: 'left',
@@ -103,13 +130,14 @@ var SlideViewer = React.createClass({
     
     return (
       <View>
-        <TouchableNativeFeedback>
+        <TouchableHighlight
+          onPress={()=>this.removeItem(post.id)} >
           <View style={styles.container}>
             <View style={itemStyle}> 
               <Text style={postStyle}>{post.text}</Text>
             </View>
           </View>
-        </TouchableNativeFeedback>
+        </TouchableHighlight>
         {this.renderMore(itemStyle.backgroundColor)}
       </View>
     );
@@ -122,7 +150,7 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#aaaaaa',
+    backgroundColor: 'black',
   },
   listView: {
 
@@ -138,6 +166,11 @@ var styles = StyleSheet.create({
   buttonText: {
     textAlign: 'center',
     color: '#444444',
+  },
+  buttonTextWhite: {
+    textAlign: 'center',
+    color: '#777777',
+    fontSize: 16
   }
 });
 
